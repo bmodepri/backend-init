@@ -8,7 +8,7 @@ export default class CreateAppointments1601020938047 implements MigrationInterfa
             new Table({
                 name: 'appointments',
                 columns: [{
-                    name: 'id',
+                    name: 'uuid',
                     type: 'varchar',
                     isPrimary: true,
                     generationStrategy: 'uuid',
