@@ -14,7 +14,7 @@ export default class AlterProviderFieldToProviderId1601053483443 implements Migr
             name: 'AppointmentProvider',
             columnNames: ['provider_id'],
             referencedColumnNames: ['id'],
-            referencedTableName: ['users'],
+            referencedTableName: 'users',
             onDelete: 'SET NULL',
             onUpdate: 'CASCADE',
         }));
