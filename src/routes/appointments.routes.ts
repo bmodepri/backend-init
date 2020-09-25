@@ -1,35 +1,35 @@
 import { Router } from 'express';
+import { getCustomRepository } from 'typeorm';
 import { parseISO } from 'date-fns';
 
 import AppointmentsRepository from '../repositories/AppointmentsRepository';
 import CreateAppointmentService from '../services/CreateAppointmentService';
 
-
 const appointmentsRouter = Router();
-const appointmentsRespository = new AppointmentsRepository();
-
 
 // SoC: Separation of concerns, each route, or part of the code must be concerned about only one thing.
 // DTO - Data transfer object - to transfer data from one object to another is much easier to use a DTO.
 // Route: receive the request, call a file to handle the request and return the result to the caller.
 
-appointmentsRouter.get('/', (request, response) => {
-    const appointments = appointmentsRespository.all();
+appointmentsRouter.get('/', async (request, response) => {
+    const appointmentsRepository = getCustomRepository(AppointmentsRepository);
+
+    const appointments = await appointmentsRepository.find();
 
     return response.json(appointments);
 });
 
 
-appointmentsRouter.post('/', (request, response) => {
+appointmentsRouter.post('/', async (request, response) => {
     
     try {
         const { provider, date } = request.body;
 
         const parsedDate = parseISO(date);
         
-        const createAppointment = new CreateAppointmentService(appointmentsRespository);
+        const createAppointment = new CreateAppointmentService();
 
-        const appointment = createAppointment.execute({date: parsedDate, provider});
+        const appointment = await createAppointment.execute({date: parsedDate, provider});
 
         return response.json(appointment);
     } catch (err) {
